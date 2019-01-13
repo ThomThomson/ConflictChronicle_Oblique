@@ -1,0 +1,429 @@
+{
+    "mapTerrain": [
+        [
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            },
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            },
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            },
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            },
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            },
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            },
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            },
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            },
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            },
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            }
+        ],
+        [
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            },
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            },
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            },
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            },
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            },
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            },
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            },
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            },
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            },
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            }
+        ],
+        [
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            },
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            },
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            },
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            },
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            },
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            },
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            },
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            },
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            },
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            }
+        ],
+        [
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            },
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            },
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            },
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            },
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            },
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            },
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            },
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            },
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            },
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            }
+        ],
+        [
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            },
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            },
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            },
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            },
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            },
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            },
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            },
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            },
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            },
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            }
+        ],
+        [
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            },
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            },
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            },
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            },
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            },
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            },
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            },
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            },
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            },
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            }
+        ],
+        [
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            },
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            },
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            },
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            },
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            },
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            },
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            },
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": [
+                    {
+                        "objectKey": "TreeStump",
+                        "location": "1,2"
+                    }
+                ]
+            },
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            },
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            }
+        ],
+        [
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            },
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            },
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            },
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            },
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            },
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            },
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            },
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            },
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            },
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            }
+        ],
+        [
+            {
+                "terrainKey": "Water",
+                "chunkObjects": []
+            },
+            {
+                "terrainKey": "Water",
+                "chunkObjects": []
+            },
+            {
+                "terrainKey": "Water",
+                "chunkObjects": []
+            },
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            },
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            },
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            },
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            },
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            },
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            },
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            }
+        ],
+        [
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            },
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            },
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            },
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            },
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            },
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            },
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            },
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            },
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            },
+            {
+                "terrainKey": "FlatGrass",
+                "chunkObjects": []
+            }
+        ]
+    ]
+}

@@ -1,0 +1,13 @@
+{
+    "SAVE_FILE_LOCATION": "A:\\GameDev\\ConflictChronicle\\ConflictChronicle_Unity\\Assets\\App\\developmentWorlds\\DevWorldSmall",
+    "TAG_VISUAL_ONLY": "CC_VisualOnly",
+    "TAG_CAMERA": "MainCamera",
+    "TERRAIN_DEFAULT_ID": "FlatGrass",
+    "LOADING_CHUNKS_PER_FRAME": 5,
+    "CAMERA_CHECK_SECONDS": 0.0,
+    "VIEW_DISTANCE_X": 5,
+    "VIEW_DISTANCE_Z": 5,
+    "TILES_PER_CHUNK": 10,
+    "DEFAULT_MAP_SIZE_CHUNKS": 10,
+    "MAP_CHANGES_SAVE_PER_FRAME": 1
+}

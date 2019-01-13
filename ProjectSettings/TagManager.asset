@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - Entity
+  - TerrainChunkFolder
+  - CC_Camera
+  - CC_AssetMap
+  - CC_Instantiate
+  - CC_TestTarget
+  - CC_AIEntityFolder
+  - CC_PlayerInterestPoint
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - 
+  - 
+  - CC_Water
+  - CC_Terrain
+  - CC_Obstacle
+  - CC_Wall
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Terrain
+    uniqueID: 2376988543
+    locked: 0
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: WorldObjects
+    uniqueID: 3733108945
+    locked: 0
+  - name: TopLayer
+    uniqueID: 3900698839
+    locked: 0
