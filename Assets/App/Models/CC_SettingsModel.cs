@@ -11,6 +11,7 @@ public class CC_SettingsModel
     public string TAG_CAMERA { get; set; }
 
     public string TERRAIN_DEFAULT_ID { get; set; }
+    public float TERRAIN_TOP_HEIGHT { get; set; }
     public int LOADING_CHUNKS_PER_FRAME { get; set; }
     public int MAP_CHANGES_SAVE_PER_FRAME { get; set; }
 

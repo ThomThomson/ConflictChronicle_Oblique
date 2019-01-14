@@ -43,11 +43,10 @@ public class MapChunkView
             GameObject chunkObject = GameObject.Instantiate(CC_AssetMap.assetMap.objectTypes[model.chunkObjects[i].objectKey]);
             chunkObject.transform.parent = chunkReference.transform;
             string[] locationString = model.chunkObjects[i].location.Split(',');
-            chunkObject.transform.position = new Vector3(
-                CC_MapController.getWorldPositionFromPositionInChunk(Int32.Parse(locationString[0]), colLocation), 
-                0, 
-                CC_MapController.getWorldPositionFromPositionInChunk(Int32.Parse(locationString[1]), rowLocation)
-            );
+            float xLocation = CC_MapController.getWorldPositionFromPositionInChunk(Int32.Parse(locationString[0]), colLocation);
+            float zLocation = CC_MapController.getWorldPositionFromPositionInChunk(Int32.Parse(locationString[1]), colLocation);
+            float yLocation = CC_MapController.getHeightFromRay(xLocation, zLocation);
+            chunkObject.transform.position = new Vector3(xLocation, yLocation, zLocation);
             chunkObjectViews.Add(new ChunkObjectView(chunkObject, model.chunkObjects[i].objectKey));
             chunkObjectLayoutIndices[Int32.Parse(locationString[0]), Int32.Parse(locationString[1])] = i;
         }
@@ -183,11 +182,25 @@ public class CC_MapController : MonoBehaviour
     // -------------------------------------------------------------
     public MapChunkView getChunkFromPosition(Vector3 position)
     {
-        if (position.z > CC_SettingsController.gameSettings.TILES_PER_CHUNK * this.mapModel.mapTerrain.Count) { return null; }
+        if (position.z > CC_SettingsController.gameSettings.TILES_PER_CHUNK * this.mapModel.mapTerrain.Count || position.z < 0) { return null; }
         int row = (int)(position.z / CC_SettingsController.gameSettings.TILES_PER_CHUNK);
-        if (position.x > CC_SettingsController.gameSettings.TILES_PER_CHUNK * this.mapModel.mapTerrain[row].Count) { return null; }
+        if (position.x > CC_SettingsController.gameSettings.TILES_PER_CHUNK * this.mapModel.mapTerrain[row].Count || position.x < 0) { return null; }
         int col = (int)(position.x / CC_SettingsController.gameSettings.TILES_PER_CHUNK);
         return chunkViews[row][col];
+    }
+
+    public static float getHeightFromRay(float x, float z)
+    {
+        Ray ray = new Ray(new Vector3(x, CC_SettingsController.gameSettings.TERRAIN_TOP_HEIGHT, z), Vector3.down);
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit))
+        {
+            return hit.point.y;
+        }
+        else
+        {
+            return 0;
+        }
     }
 
     public static int getPositionInChunkFromWorldPosition(float worldPosition, int chunkIndex)
@@ -206,16 +219,17 @@ public class CC_MapController : MonoBehaviour
         if (CC_AssetMap.assetMap.objectTypes.ContainsKey(objectId))
         {
             MapChunkView chunk = getChunkFromPosition(position);
+            if (chunk == null) { return; }
             int localx = getPositionInChunkFromWorldPosition(position.x, chunk.colLocation);
             int localz = getPositionInChunkFromWorldPosition(position.z, chunk.rowLocation);
             int spawnx = (int)position.x;
             int spawnz = (int)position.z;
             if (chunk.chunkObjectLayoutIndices[localx, localz] == -1 || overWrite)
             {
-                if(overWrite) { RemoveWorldObject(position); }
+                if (overWrite) { RemoveWorldObject(position); }
                 GameObject spawnedObject = GameObject.Instantiate(CC_AssetMap.assetMap.objectTypes[objectId]);
                 spawnedObject.transform.parent = chunk.chunkReference.transform;
-                spawnedObject.transform.position = new Vector3((float)spawnx, 0, (float)spawnz);
+                spawnedObject.transform.position = new Vector3((float)spawnx, getHeightFromRay((float)spawnx, (float)spawnz), (float)spawnz);
                 chunk.chunkObjectViews.Add(new ChunkObjectView(spawnedObject, objectId));
                 chunk.chunkObjectLayoutIndices[localx, localz] = chunk.chunkObjectViews.Count - 1;
                 MapChunkChange change = new MapChunkChange(chunk, chunk.rowLocation, chunk.colLocation);

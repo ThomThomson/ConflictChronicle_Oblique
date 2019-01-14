@@ -42,6 +42,11 @@ public class Main : MonoBehaviour
             Debug.Log("Deleting");
             mapController.RemoveWorldObject(focusPoint.transform.position);
         }
+        if(Input.GetMouseButtonDown(0))
+        {
+            Vector3? point = CC_CameraUtil.screenToWorldCoordinates(Input.mousePosition);
+            if(point.HasValue) { mapController.SpawnWorldObject((Vector3)point, "TreeStump"); }
+        }
         if (Input.GetKeyDown(KeyCode.UpArrow))
         {
             if(mapRow < worldMaxRow - 1)
@@ -135,9 +140,8 @@ public class Main : MonoBehaviour
             (map.mapTerrain.Count * CC_SettingsController.gameSettings.TILES_PER_CHUNK) / 2
         );
         // make spawn points in each map later....
-        focusPoint.transform.position = new Vector3(3, 5, 3);
+        focusPoint.transform.position = new Vector3(3, 0, 3);
         followScript.player = focusPoint;
         Time.timeScale = 1;
     }
 }
-
