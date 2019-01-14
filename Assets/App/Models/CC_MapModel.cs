@@ -32,11 +32,18 @@ public class CC_MapChunkModel
     public CC_MapChunkModel(MapChunkView fromView)
     {
         this.terrainKey = fromView.terrainKey;
+        chunkObjects = new List<CC_MapObjectModel>();
         fromView.chunkObjectViews.ForEach((ChunkObjectView view) =>
         {
-            int locationX = (int)view.chunkObjectReference.transform.localPosition.x;
-            int locationZ = (int)view.chunkObjectReference.transform.localPosition.z;
-            string location = locationX + "," + locationZ;
+            int localx = CC_MapController.getPositionInChunkFromWorldPosition(
+                view.chunkObjectReference.transform.position.x,
+                fromView.colLocation
+            );
+            int localz = CC_MapController.getPositionInChunkFromWorldPosition(
+                view.chunkObjectReference.transform.position.z,
+                fromView.rowLocation
+            );
+            string location = localx + "," + localz;
             this.chunkObjects.Add(new CC_MapObjectModel(location, view.chunkObjectID));
         });
     }
@@ -52,9 +59,10 @@ public class CC_MapModel
 
 public class CC_MapModelUtil
 {
-    public static CC_MapModel LoadMapFromFile(int xLocation, int yLocation, string worldFolderLocation)
+    public static CC_MapModel LoadMapFromFile(int mapRowLocation, int mapColLocation, string worldFolderLocation)
     {
-        string mapLocation = worldFolderLocation + @"\Maps\map-" + xLocation + "-" + yLocation + ".json";
+        string mapLocation = worldFolderLocation + @"\Maps\map-" + mapRowLocation + "-" + mapColLocation + ".json";
+        Debug.Log("Loading from " + mapLocation);
         if (File.Exists(mapLocation))
         {
             string mapString = System.IO.File.ReadAllText(mapLocation);
@@ -81,5 +89,12 @@ public class CC_MapModelUtil
             System.IO.File.WriteAllText(mapLocation, mapString);
             return map;
         }
+    }
+
+    public static void SaveMapToFile(string worldFolderLocation, CC_MapModel mapToSave, int mapRowLocation, int mapColLocation, bool overWrite = true)
+    {
+        string mapLocation = worldFolderLocation + @"\Maps\map-" + mapRowLocation + "-" + mapColLocation + ".json";
+        string mapString = JsonConvert.SerializeObject(mapToSave);
+        System.IO.File.WriteAllText(mapLocation, mapString);
     }
 }

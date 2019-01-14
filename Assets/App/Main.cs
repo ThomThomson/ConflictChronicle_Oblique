@@ -14,10 +14,10 @@ public class Main : MonoBehaviour
     private CC_MapController mapController;
     private CC_CameraFollow followScript;
     private GameObject focusPoint;
-    private int mapX;
-    private int worldMaxX = 3;
-    private int mapY;
-    private int worldMaxY = 3;
+    private int mapRow;
+    private int worldMaxRow = 3;
+    private int mapCol;
+    private int worldMaxCol = 3;
 
     void Start()
     {
@@ -31,46 +31,46 @@ public class Main : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Return))
         {
-            Debug.Log("Saving...");
-            mapController.SaveToJSON();
+            mapController.SaveToDisk();
         }
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            Debug.Log("Space");
+            mapController.SpawnWorldObject(focusPoint.transform.position, "TreeStump");
         }
-        if (Input.GetKeyDown(KeyCode.RightArrow))
+        if (Input.GetKeyDown(KeyCode.Delete))
         {
-            Debug.Log("Next X");
-            if(mapX < worldMaxX)
-            {
-                mapX++;
-                loadMap();
-            }
-        }
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
-        {
-            Debug.Log("Previous X");
-            if(mapX > 0)
-            {
-                mapX--;
-                loadMap();
-            }
+            Debug.Log("Deleting");
+            mapController.RemoveWorldObject(focusPoint.transform.position);
         }
         if (Input.GetKeyDown(KeyCode.UpArrow))
         {
-            Debug.Log("Next Y");
-            if(mapY < worldMaxY)
+            if(mapRow < worldMaxRow - 1)
             {
-                mapY++;
+                mapRow++;
                 loadMap();
             }
         }
         if (Input.GetKeyDown(KeyCode.DownArrow))
         {
-            Debug.Log("Previous Y");
-            if(mapY > 0)
+            if(mapRow > 0)
             {
-                mapY--;
+                mapRow--;
+                loadMap();
+            }
+        }
+        if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            if(mapCol < worldMaxCol - 1)
+            {
+                mapCol++;
+                loadMap();
+            }
+        }
+        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            if(mapCol > 0)
+            {
+                mapCol--;
                 loadMap();
             }
         }
@@ -98,8 +98,8 @@ public class Main : MonoBehaviour
     {
         Time.timeScale = 0;
         // TODO: save these in the WORLD settings file in the world folder;
-        mapX = 0;
-        mapY = 0;
+        mapRow = 0;
+        mapCol = 0;
         if (this.ConflictChronicleAssets == null)
         {
             throw new MissingReferenceException("Asset Map not attached to main game object!");
@@ -120,10 +120,10 @@ public class Main : MonoBehaviour
 
     private void loadMap()
     {
-        Debug.Log("Loading Map: " + mapX + " " + mapY);
+        Debug.Log("Loading Map: " + mapRow + " " + mapCol);
         Time.timeScale = 0;
-        CC_MapModel map = CC_MapModelUtil.LoadMapFromFile(mapX, mapY, selectedWorldLocation);
-        mapController.LoadMapIntoScene(map, selectedWorldLocation);
+        CC_MapModel map = CC_MapModelUtil.LoadMapFromFile(mapRow, mapCol, selectedWorldLocation);
+        mapController.LoadMapIntoScene(map, selectedWorldLocation, mapRow, mapCol);
         // Pathfinding....
         GridGraph graph = (GridGraph)AstarPath.active.data.graphs[0];
         int width = map.mapTerrain[0].Count * CC_SettingsController.gameSettings.TILES_PER_CHUNK;
@@ -135,7 +135,7 @@ public class Main : MonoBehaviour
             (map.mapTerrain.Count * CC_SettingsController.gameSettings.TILES_PER_CHUNK) / 2
         );
         // make spawn points in each map later....
-        focusPoint.transform.position = new Vector3(3, 1, 3);
+        focusPoint.transform.position = new Vector3(3, 5, 3);
         followScript.player = focusPoint;
         Time.timeScale = 1;
     }

@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Collections.ObjectModel;
@@ -8,6 +7,7 @@ using UnityEngine;
 using System.Threading;
 using System.Timers;
 using System;
+using Pathfinding;
 
 public class ChunkObjectView
 {
@@ -24,24 +24,45 @@ public class ChunkObjectView
 public class MapChunkView
 {
     public string terrainKey { get; set; }
+    public int rowLocation { get; set; }
+    public int colLocation { get; set; }
     public GameObject chunkReference { get; set; }
     public List<ChunkObjectView> chunkObjectViews { get; set; }
     public int[,] chunkObjectLayoutIndices { get; set; }
 
-    public MapChunkView(CC_MapChunkModel model, GameObject chunkReference)
+    public MapChunkView(CC_MapChunkModel model, GameObject chunkReference, int rowLocation, int colLocation)
     {
+        this.rowLocation = rowLocation;
+        this.colLocation = colLocation;
         this.chunkReference = chunkReference;
         terrainKey = model.terrainKey;
-        chunkObjectLayoutIndices = new int[CC_SettingsController.gameSettings.TILES_PER_CHUNK, CC_SettingsController.gameSettings.TILES_PER_CHUNK];
+        setupLayoutIndices();
         chunkObjectViews = new List<ChunkObjectView>();
         for (int i = 0; i < model.chunkObjects.Count; i++)
         {
             GameObject chunkObject = GameObject.Instantiate(CC_AssetMap.assetMap.objectTypes[model.chunkObjects[i].objectKey]);
             chunkObject.transform.parent = chunkReference.transform;
             string[] locationString = model.chunkObjects[i].location.Split(',');
-            chunkObject.transform.localPosition = new Vector3(float.Parse(locationString[0]), 0, float.Parse(locationString[1]));
+            chunkObject.transform.position = new Vector3(
+                CC_MapController.getWorldPositionFromPositionInChunk(Int32.Parse(locationString[0]), colLocation), 
+                0, 
+                CC_MapController.getWorldPositionFromPositionInChunk(Int32.Parse(locationString[1]), rowLocation)
+            );
             chunkObjectViews.Add(new ChunkObjectView(chunkObject, model.chunkObjects[i].objectKey));
             chunkObjectLayoutIndices[Int32.Parse(locationString[0]), Int32.Parse(locationString[1])] = i;
+        }
+    }
+
+    public void setupLayoutIndices()
+    {
+
+        chunkObjectLayoutIndices = new int[CC_SettingsController.gameSettings.TILES_PER_CHUNK, CC_SettingsController.gameSettings.TILES_PER_CHUNK];
+        for (int i = 0; i < chunkObjectLayoutIndices.GetLength(0); i++)
+        {
+            for (int j = 0; j < chunkObjectLayoutIndices.GetLength(1); j++)
+            {
+                chunkObjectLayoutIndices[i, j] = -1;
+            }
         }
     }
 }
@@ -63,21 +84,25 @@ public class MapChunkChange
 public class CC_MapController : MonoBehaviour
 {
     public static CC_MapController instance;
-    public string mapLocation;
+    public string worldFolderLocation;
+    public int mapRowLocation;
+    public int mapColLocation;
     private CC_MapModel mapModel;
     private List<List<MapChunkView>> chunkViews;
     private int mapLoadPercentage;
-    private bool savingToJson = false;
+    private bool savingToDisk = false;
     private Queue<MapChunkChange> pendingChanges;
+    private GridGraph graph;
 
     public void Start()
     {
         instance = this;
+        graph = (GridGraph)AstarPath.active.data.graphs[0];
     }
 
     private void Update()
     {
-        if (!savingToJson && pendingChanges != null)
+        if (!savingToDisk && pendingChanges != null)
         {
             int recordsChanged = 0;
             while (recordsChanged < CC_SettingsController.gameSettings.MAP_CHANGES_SAVE_PER_FRAME && pendingChanges.Count != 0)
@@ -87,17 +112,19 @@ public class CC_MapController : MonoBehaviour
                 recordsChanged++;
             }
         }
-        
+
     }
 
-    public void LoadMapIntoScene(CC_MapModel map, String mapLocation)
+    public void LoadMapIntoScene(CC_MapModel map, String worldFolderLocation, int mapRowLocation, int mapColLocation)
     {
-        this.mapLocation = mapLocation;
         if (chunkViews != null)
         {
-            SaveToJSON();
+            SaveToDisk(false);
             DestroyAllWorldObjects();
         }
+        this.mapRowLocation = mapRowLocation;
+        this.mapColLocation = mapColLocation;
+        this.worldFolderLocation = worldFolderLocation;
         chunkViews = new List<List<MapChunkView>>();
         pendingChanges = new Queue<MapChunkChange>();
         mapModel = map;
@@ -135,7 +162,7 @@ public class CC_MapController : MonoBehaviour
         chunk.name = "Terrain Chunk at: " + row + " - " + col;
         chunk.transform.parent = folder.transform;
         chunk.transform.position = new Vector3(col * CC_SettingsController.gameSettings.TILES_PER_CHUNK, 0, row * CC_SettingsController.gameSettings.TILES_PER_CHUNK);
-        return new MapChunkView(model, chunk);
+        return new MapChunkView(model, chunk, row, col);
     }
 
     public GameObject getChunkFolder()
@@ -163,16 +190,42 @@ public class CC_MapController : MonoBehaviour
         return chunkViews[row][col];
     }
 
-    public void SpawnWorldObject(Vector3 position, string objectId)
+    public static int getPositionInChunkFromWorldPosition(float worldPosition, int chunkIndex)
     {
+        return (int)(worldPosition - (chunkIndex * CC_SettingsController.gameSettings.TILES_PER_CHUNK));
+    }
+
+    public static float getWorldPositionFromPositionInChunk(int indexInChunk, int chunkIndex)
+    {
+        return (float)(indexInChunk + (chunkIndex * CC_SettingsController.gameSettings.TILES_PER_CHUNK));
+    }
+
+    public void SpawnWorldObject(Vector3 position, string objectId, bool overWrite = false)
+    {
+        Debug.Log("Spawning " + objectId + " at " + position);
         if (CC_AssetMap.assetMap.objectTypes.ContainsKey(objectId))
         {
-            GameObject spawnedObject = GameObject.Instantiate(CC_AssetMap.assetMap.objectTypes[objectId]);
+            MapChunkView chunk = getChunkFromPosition(position);
+            int localx = getPositionInChunkFromWorldPosition(position.x, chunk.colLocation);
+            int localz = getPositionInChunkFromWorldPosition(position.z, chunk.rowLocation);
             int spawnx = (int)position.x;
             int spawnz = (int)position.z;
-            MapChunkView chunk = getChunkFromPosition(position);
-            spawnedObject.transform.parent = chunk.chunkReference.transform;
-            spawnedObject.transform.position = new Vector3((float)spawnx, 0, (float)spawnz);
+            if (chunk.chunkObjectLayoutIndices[localx, localz] == -1 || overWrite)
+            {
+                if(overWrite) { RemoveWorldObject(position); }
+                GameObject spawnedObject = GameObject.Instantiate(CC_AssetMap.assetMap.objectTypes[objectId]);
+                spawnedObject.transform.parent = chunk.chunkReference.transform;
+                spawnedObject.transform.position = new Vector3((float)spawnx, 0, (float)spawnz);
+                chunk.chunkObjectViews.Add(new ChunkObjectView(spawnedObject, objectId));
+                chunk.chunkObjectLayoutIndices[localx, localz] = chunk.chunkObjectViews.Count - 1;
+                MapChunkChange change = new MapChunkChange(chunk, chunk.rowLocation, chunk.colLocation);
+                pendingChanges.Enqueue(change);
+                BoxCollider graphUpdateBox = spawnedObject.GetComponent<BoxCollider>();
+                if (graphUpdateBox)
+                {
+                    graph.active.UpdateGraphs(graphUpdateBox.bounds);
+                }
+            }
         }
         else
         {
@@ -182,22 +235,55 @@ public class CC_MapController : MonoBehaviour
 
     public void RemoveWorldObject(Vector3 position)
     {
-
+        MapChunkView chunk = getChunkFromPosition(position);
+        int deleteX = getPositionInChunkFromWorldPosition(position.x, chunk.colLocation);
+        int deleteZ = getPositionInChunkFromWorldPosition(position.z, chunk.rowLocation);
+        if (chunk.chunkObjectLayoutIndices[deleteX, deleteZ] != -1)
+        {
+            int index = chunk.chunkObjectLayoutIndices[deleteX, deleteZ];
+            chunk.chunkObjectLayoutIndices[deleteX, deleteZ] = -1;
+            BoxCollider graphUpdateBox = chunk.chunkObjectViews[index].chunkObjectReference.GetComponent<BoxCollider>();
+            Bounds updateBounds = new Bounds(Vector3.zero, Vector3.zero);
+            if (graphUpdateBox) { updateBounds = new Bounds(graphUpdateBox.bounds.center, graphUpdateBox.bounds.size); }
+            Destroy(chunk.chunkObjectViews[index].chunkObjectReference);
+            chunk.chunkObjectViews.RemoveAt(index);
+            MapChunkChange change = new MapChunkChange(chunk, chunk.rowLocation, chunk.colLocation);
+            pendingChanges.Enqueue(change);
+            if (updateBounds.size != Vector3.zero)
+            {
+                graph.active.UpdateGraphs(updateBounds);
+            }
+        }
     }
-
-
 
     // -------------------------------------------------------------
     // Saving Functions
     // -------------------------------------------------------------
-    public void SaveToJSON()
+    public void SaveToDisk(bool useThread = true)
     {
-
+        Debug.Log("Saving to file " + worldFolderLocation + @"\Maps\map-" + mapRowLocation + "-" + mapColLocation + ".json");
+        savingToDisk = true;
+        if (useThread) // thread makes saving during gameplay seamless
+        {
+            ThreadStart starter = (() => CC_MapModelUtil.SaveMapToFile(worldFolderLocation, mapModel, mapRowLocation, mapColLocation));
+            starter += () =>
+            {
+                Debug.Log("Saving finished");
+                savingToDisk = false;
+            };
+            Thread thread = new Thread(starter) { IsBackground = true };
+            thread.Start();
+        }
+        else
+        {
+            CC_MapModelUtil.SaveMapToFile(worldFolderLocation, mapModel, mapRowLocation, mapColLocation);
+            savingToDisk = false;
+            Debug.Log("Saving Finished");
+        }
     }
 
     public void DestroyAllWorldObjects()
     {
-        Debug.Log("Destroying everything");
         this.chunkViews.ForEach((List<MapChunkView> viewRow) =>
         {
             viewRow.ForEach((MapChunkView chunkView) =>

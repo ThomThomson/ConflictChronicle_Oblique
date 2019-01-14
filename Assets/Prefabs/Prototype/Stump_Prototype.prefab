@@ -37,7 +37,7 @@ GameObject:
   - component: {fileID: 4307457344184616}
   - component: {fileID: 65528787756289346}
   m_Layer: 11
-  m_Name: Tree_Prototype
+  m_Name: Stump_Prototype
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -79,7 +79,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1376935474598512}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 103.04667, y: 7.1753283, z: 73.14457}
+  m_LocalPosition: {x: 29.858118, y: 22.051378, z: -24.856865}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4034096274815044}
@@ -110,8 +110,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 2, y: 5, z: 2}
-  m_Center: {x: 0.5, y: 2.5, z: 0.5}
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0.5, y: 0.5, z: 0.5}
 --- !u!65 &65660981548477458
 BoxCollider:
   m_ObjectHideFlags: 1
@@ -122,8 +122,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 5, z: 1}
-  m_Center: {x: 0.5, y: 2.5, z: 0.5}
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0.5, y: 0.5, z: 0.5}
 --- !u!212 &212575871483533150
 SpriteRenderer:
   m_ObjectHideFlags: 1
