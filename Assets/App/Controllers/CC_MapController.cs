@@ -44,7 +44,7 @@ public class MapChunkView
             chunkObject.transform.parent = chunkReference.transform;
             string[] locationString = model.chunkObjects[i].location.Split(',');
             float xLocation = CC_MapController.getWorldPositionFromPositionInChunk(Int32.Parse(locationString[0]), colLocation);
-            float zLocation = CC_MapController.getWorldPositionFromPositionInChunk(Int32.Parse(locationString[1]), colLocation);
+            float zLocation = CC_MapController.getWorldPositionFromPositionInChunk(Int32.Parse(locationString[1]), rowLocation);
             float yLocation = CC_MapController.getHeightFromRay(xLocation, zLocation);
             chunkObject.transform.position = new Vector3(xLocation, yLocation, zLocation);
             chunkObjectViews.Add(new ChunkObjectView(chunkObject, model.chunkObjects[i].objectKey));
@@ -186,14 +186,16 @@ public class CC_MapController : MonoBehaviour
         int row = (int)(position.z / CC_SettingsController.gameSettings.TILES_PER_CHUNK);
         if (position.x > CC_SettingsController.gameSettings.TILES_PER_CHUNK * this.mapModel.mapTerrain[row].Count || position.x < 0) { return null; }
         int col = (int)(position.x / CC_SettingsController.gameSettings.TILES_PER_CHUNK);
+        Debug.Log("Got " + row + " " + col + " From " + position.z + " " + position.x);
         return chunkViews[row][col];
     }
 
     public static float getHeightFromRay(float x, float z)
     {
         Ray ray = new Ray(new Vector3(x, CC_SettingsController.gameSettings.TERRAIN_TOP_HEIGHT, z), Vector3.down);
+        int layerMask = 1 << CC_SettingsController.gameSettings.TERRAIN_LAYER_INDEX;
         RaycastHit hit;
-        if (Physics.Raycast(ray, out hit))
+        if (Physics.Raycast(ray, out hit, layerMask))
         {
             return hit.point.y;
         }

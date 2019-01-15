@@ -5,10 +5,14 @@ using System.IO;
 using UnityEngine;
 
 using Pathfinding;
+using UnityEngine.UI;
 
 public class Main : MonoBehaviour
 {
     public CC_AssetMap ConflictChronicleAssets;
+    public Text debugText;
+
+
     private string savedSettingsLocation;
     private string selectedWorldLocation;
     private CC_MapController mapController;
@@ -44,7 +48,7 @@ public class Main : MonoBehaviour
         }
         if(Input.GetMouseButtonDown(0))
         {
-            Vector3? point = CC_CameraUtil.screenToWorldCoordinates(Input.mousePosition);
+            Vector3? point = CC_CameraUtil.screenToWorldCoordinatesOnGround(Input.mousePosition);
             if(point.HasValue) { mapController.SpawnWorldObject((Vector3)point, "TreeStump"); }
         }
         if (Input.GetKeyDown(KeyCode.UpArrow))
@@ -125,7 +129,8 @@ public class Main : MonoBehaviour
 
     private void loadMap()
     {
-        Debug.Log("Loading Map: " + mapRow + " " + mapCol);
+        debugText.text = "Viewing Map: " + mapRow + " " + mapCol;
+        //Debug.Log("Loading Map: " + mapRow + " " + mapCol);
         Time.timeScale = 0;
         CC_MapModel map = CC_MapModelUtil.LoadMapFromFile(mapRow, mapCol, selectedWorldLocation);
         mapController.LoadMapIntoScene(map, selectedWorldLocation, mapRow, mapCol);

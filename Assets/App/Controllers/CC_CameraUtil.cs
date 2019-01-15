@@ -18,4 +18,30 @@ public class CC_CameraUtil
             return null;
         }
     }
+
+    public static Vector3? screenToWorldCoordinatesOnGround(Vector3 screencoordinates)
+    {
+        Ray ray = Camera.main.gameObject.GetComponent<CameraPerspectiveEditor>().ScreenPointToRay(screencoordinates);
+        // Bit shift the index of the TERRAIN layer (9) to get a bit mask
+        RaycastHit hit;
+        int layerMask = 1 << CC_SettingsController.gameSettings.TERRAIN_LAYER_INDEX;
+        if (Physics.Raycast(ray.origin, ray.direction, out hit, layerMask))
+        {
+            return hit.point;
+        }
+        return null;
+    }
+
+    public static Vector3? worldTopToGround(Vector3 screencoordinates)
+    {
+        Ray ray = Camera.main.gameObject.GetComponent<CameraPerspectiveEditor>().ScreenPointToRay(screencoordinates);
+        // Bit shift the index of the TERRAIN layer (9) to get a bit mask
+        RaycastHit hit;
+        int layerMask = 1 << CC_SettingsController.gameSettings.TERRAIN_LAYER_INDEX;
+        if (Physics.Raycast(ray.origin, ray.direction, out hit, layerMask))
+        {
+            return hit.point;
+        }
+        return null;
+    }
 }

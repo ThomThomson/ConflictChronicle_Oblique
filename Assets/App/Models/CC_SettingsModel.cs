@@ -12,6 +12,7 @@ public class CC_SettingsModel
 
     public string TERRAIN_DEFAULT_ID { get; set; }
     public float TERRAIN_TOP_HEIGHT { get; set; }
+    public int TERRAIN_LAYER_INDEX { get; set; }
     public int LOADING_CHUNKS_PER_FRAME { get; set; }
     public int MAP_CHANGES_SAVE_PER_FRAME { get; set; }
 
@@ -28,6 +29,8 @@ public class CC_SettingsModel
         TAG_CAMERA = "MainCamera";
 
         TERRAIN_DEFAULT_ID = "FlatGrass";
+        TERRAIN_TOP_HEIGHT = 1000;
+        TERRAIN_LAYER_INDEX = 9;
         LOADING_CHUNKS_PER_FRAME = 5;
         MAP_CHANGES_SAVE_PER_FRAME = 1;
 
