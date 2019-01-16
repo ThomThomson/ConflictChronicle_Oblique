@@ -186,7 +186,6 @@ public class CC_MapController : MonoBehaviour
         int row = (int)(position.z / CC_SettingsController.gameSettings.TILES_PER_CHUNK);
         if (position.x > CC_SettingsController.gameSettings.TILES_PER_CHUNK * this.mapModel.mapTerrain[row].Count || position.x < 0) { return null; }
         int col = (int)(position.x / CC_SettingsController.gameSettings.TILES_PER_CHUNK);
-        Debug.Log("Got " + row + " " + col + " From " + position.z + " " + position.x);
         return chunkViews[row][col];
     }
 
@@ -233,6 +232,7 @@ public class CC_MapController : MonoBehaviour
                 spawnedObject.transform.parent = chunk.chunkReference.transform;
                 spawnedObject.transform.position = new Vector3((float)spawnx, getHeightFromRay((float)spawnx, (float)spawnz), (float)spawnz);
                 chunk.chunkObjectViews.Add(new ChunkObjectView(spawnedObject, objectId));
+                // Debug.Log("Added object... count in this chunk: " + );
                 chunk.chunkObjectLayoutIndices[localx, localz] = chunk.chunkObjectViews.Count - 1;
                 MapChunkChange change = new MapChunkChange(chunk, chunk.rowLocation, chunk.colLocation);
                 pendingChanges.Enqueue(change);
@@ -257,6 +257,8 @@ public class CC_MapController : MonoBehaviour
         if (chunk.chunkObjectLayoutIndices[deleteX, deleteZ] != -1)
         {
             int index = chunk.chunkObjectLayoutIndices[deleteX, deleteZ];
+            Debug.Log("Index: " + index);
+            Debug.Log("Limit: " + chunk.chunkObjectViews.Count);
             chunk.chunkObjectLayoutIndices[deleteX, deleteZ] = -1;
             BoxCollider graphUpdateBox = chunk.chunkObjectViews[index].chunkObjectReference.GetComponent<BoxCollider>();
             Bounds updateBounds = new Bounds(Vector3.zero, Vector3.zero);

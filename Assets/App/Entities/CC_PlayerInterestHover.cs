@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-class HoverScript : MonoBehaviour {
+class CC_PlayerInterestHover : MonoBehaviour {
     public float speed = 6.0F;
     private Vector3 moveDirection = Vector3.zero;
     private CharacterController controller; 
@@ -13,14 +13,10 @@ class HoverScript : MonoBehaviour {
 
     void Update()
     {
-        moveDirection = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
-        Vector3.ClampMagnitude(moveDirection, 1f);
+        moveDirection = CC_InputController.input.getInputCameraNormalized();
+        //Vector3.ClampMagnitude(moveDirection, 1f);
         moveDirection *= speed;
         controller.Move(moveDirection * Time.deltaTime);
-
-        if(Input.GetKeyDown(KeyCode.Space)) {
-            
-        }
     }
 }
 

@@ -23,11 +23,12 @@ public class CC_CameraUtil
     {
         Ray ray = Camera.main.gameObject.GetComponent<CameraPerspectiveEditor>().ScreenPointToRay(screencoordinates);
         // Bit shift the index of the TERRAIN layer (9) to get a bit mask
-        RaycastHit hit;
+        RaycastHit[] hits;
         int layerMask = 1 << CC_SettingsController.gameSettings.TERRAIN_LAYER_INDEX;
-        if (Physics.Raycast(ray.origin, ray.direction, out hit, layerMask))
+        hits = Physics.RaycastAll(ray.origin, ray.direction, layerMask);
+        if (hits.Length > 0)
         {
-            return hit.point;
+            return hits[hits.Length - 1].point;
         }
         return null;
     }
