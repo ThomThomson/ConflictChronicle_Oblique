@@ -27,8 +27,7 @@ public class MapChunkView
     public int rowLocation { get; set; }
     public int colLocation { get; set; }
     public GameObject chunkReference { get; set; }
-    public List<ChunkObjectView> chunkObjectViews { get; set; }
-    public int[,] chunkObjectLayoutIndices { get; set; }
+    public ChunkObjectView[,] chunkObjectViews { get; set; }
 
     public MapChunkView(CC_MapChunkModel model, GameObject chunkReference, int rowLocation, int colLocation)
     {
@@ -36,32 +35,17 @@ public class MapChunkView
         this.colLocation = colLocation;
         this.chunkReference = chunkReference;
         terrainKey = model.terrainKey;
-        setupLayoutIndices();
-        chunkObjectViews = new List<ChunkObjectView>();
+        chunkObjectViews = new ChunkObjectView[CC_SettingsController.gameSettings.TILES_PER_CHUNK, CC_SettingsController.gameSettings.TILES_PER_CHUNK];
         for (int i = 0; i < model.chunkObjects.Count; i++)
         {
             GameObject chunkObject = GameObject.Instantiate(CC_AssetMap.assetMap.objectTypes[model.chunkObjects[i].objectKey]);
             chunkObject.transform.parent = chunkReference.transform;
             string[] locationString = model.chunkObjects[i].location.Split(',');
-            float xLocation = CC_MapController.getWorldPositionFromPositionInChunk(Int32.Parse(locationString[0]), colLocation);
-            float zLocation = CC_MapController.getWorldPositionFromPositionInChunk(Int32.Parse(locationString[1]), rowLocation);
+            float xLocation = CC_MapController.getWorldPositionFromPositionInChunk(Int32.Parse(locationString[1]), colLocation);
+            float zLocation = CC_MapController.getWorldPositionFromPositionInChunk(Int32.Parse(locationString[0]), rowLocation);
             float yLocation = CC_MapController.getHeightFromRay(xLocation, zLocation);
             chunkObject.transform.position = new Vector3(xLocation, yLocation, zLocation);
-            chunkObjectViews.Add(new ChunkObjectView(chunkObject, model.chunkObjects[i].objectKey));
-            chunkObjectLayoutIndices[Int32.Parse(locationString[0]), Int32.Parse(locationString[1])] = i;
-        }
-    }
-
-    public void setupLayoutIndices()
-    {
-
-        chunkObjectLayoutIndices = new int[CC_SettingsController.gameSettings.TILES_PER_CHUNK, CC_SettingsController.gameSettings.TILES_PER_CHUNK];
-        for (int i = 0; i < chunkObjectLayoutIndices.GetLength(0); i++)
-        {
-            for (int j = 0; j < chunkObjectLayoutIndices.GetLength(1); j++)
-            {
-                chunkObjectLayoutIndices[i, j] = -1;
-            }
+            chunkObjectViews[Int32.Parse(locationString[0]), Int32.Parse(locationString[1])] = new ChunkObjectView(chunkObject, model.chunkObjects[i].objectKey);
         }
     }
 }
@@ -209,31 +193,28 @@ public class CC_MapController : MonoBehaviour
         return (int)(worldPosition - (chunkIndex * CC_SettingsController.gameSettings.TILES_PER_CHUNK));
     }
 
-    public static float getWorldPositionFromPositionInChunk(int indexInChunk, int chunkIndex)
+    public static int getWorldPositionFromPositionInChunk(int indexInChunk, int chunkIndex)
     {
-        return (float)(indexInChunk + (chunkIndex * CC_SettingsController.gameSettings.TILES_PER_CHUNK));
+        return (int)(indexInChunk + (chunkIndex * CC_SettingsController.gameSettings.TILES_PER_CHUNK));
     }
 
     public void SpawnWorldObject(Vector3 position, string objectId, bool overWrite = false)
     {
-        Debug.Log("Spawning " + objectId + " at " + position);
         if (CC_AssetMap.assetMap.objectTypes.ContainsKey(objectId))
         {
             MapChunkView chunk = getChunkFromPosition(position);
             if (chunk == null) { return; }
-            int localx = getPositionInChunkFromWorldPosition(position.x, chunk.colLocation);
             int localz = getPositionInChunkFromWorldPosition(position.z, chunk.rowLocation);
+            int localx = getPositionInChunkFromWorldPosition(position.x, chunk.colLocation);
             int spawnx = (int)position.x;
             int spawnz = (int)position.z;
-            if (chunk.chunkObjectLayoutIndices[localx, localz] == -1 || overWrite)
+            if (chunk.chunkObjectViews[localz, localx] == null || overWrite)
             {
                 if (overWrite) { RemoveWorldObject(position); }
                 GameObject spawnedObject = GameObject.Instantiate(CC_AssetMap.assetMap.objectTypes[objectId]);
                 spawnedObject.transform.parent = chunk.chunkReference.transform;
                 spawnedObject.transform.position = new Vector3((float)spawnx, getHeightFromRay((float)spawnx, (float)spawnz), (float)spawnz);
-                chunk.chunkObjectViews.Add(new ChunkObjectView(spawnedObject, objectId));
-                // Debug.Log("Added object... count in this chunk: " + );
-                chunk.chunkObjectLayoutIndices[localx, localz] = chunk.chunkObjectViews.Count - 1;
+                chunk.chunkObjectViews[localz, localx] = new ChunkObjectView(spawnedObject, objectId);
                 MapChunkChange change = new MapChunkChange(chunk, chunk.rowLocation, chunk.colLocation);
                 pendingChanges.Enqueue(change);
                 BoxCollider graphUpdateBox = spawnedObject.GetComponent<BoxCollider>();
@@ -241,6 +222,7 @@ public class CC_MapController : MonoBehaviour
                 {
                     graph.active.UpdateGraphs(graphUpdateBox.bounds);
                 }
+                Debug.Log("ADDITION: Got chunk: " + chunk.rowLocation + " " + chunk.colLocation + " And location: " + localz + " " + localx +  " from: " + position);
             }
         }
         else
@@ -252,19 +234,16 @@ public class CC_MapController : MonoBehaviour
     public void RemoveWorldObject(Vector3 position)
     {
         MapChunkView chunk = getChunkFromPosition(position);
-        int deleteX = getPositionInChunkFromWorldPosition(position.x, chunk.colLocation);
-        int deleteZ = getPositionInChunkFromWorldPosition(position.z, chunk.rowLocation);
-        if (chunk.chunkObjectLayoutIndices[deleteX, deleteZ] != -1)
+        int localz = getPositionInChunkFromWorldPosition(position.z, chunk.rowLocation);
+        int localx = getPositionInChunkFromWorldPosition(position.x, chunk.colLocation);
+        if (chunk.chunkObjectViews[localz, localx] != null)
         {
-            int index = chunk.chunkObjectLayoutIndices[deleteX, deleteZ];
-            Debug.Log("Index: " + index);
-            Debug.Log("Limit: " + chunk.chunkObjectViews.Count);
-            chunk.chunkObjectLayoutIndices[deleteX, deleteZ] = -1;
-            BoxCollider graphUpdateBox = chunk.chunkObjectViews[index].chunkObjectReference.GetComponent<BoxCollider>();
+            Debug.Log("DELETION: Got chunk: " + chunk.rowLocation + " " + chunk.colLocation + " And location: " + localz + " " + localx +  " from " + position);
+            BoxCollider graphUpdateBox = chunk.chunkObjectViews[localz, localx].chunkObjectReference.GetComponent<BoxCollider>();
             Bounds updateBounds = new Bounds(Vector3.zero, Vector3.zero);
             if (graphUpdateBox) { updateBounds = new Bounds(graphUpdateBox.bounds.center, graphUpdateBox.bounds.size); }
-            Destroy(chunk.chunkObjectViews[index].chunkObjectReference);
-            chunk.chunkObjectViews.RemoveAt(index);
+            Destroy(chunk.chunkObjectViews[localz, localx].chunkObjectReference);
+            chunk.chunkObjectViews[localz, localx] = null;
             MapChunkChange change = new MapChunkChange(chunk, chunk.rowLocation, chunk.colLocation);
             pendingChanges.Enqueue(change);
             if (updateBounds.size != Vector3.zero)
@@ -306,10 +285,14 @@ public class CC_MapController : MonoBehaviour
         {
             viewRow.ForEach((MapChunkView chunkView) =>
             {
-                chunkView.chunkObjectViews.ForEach((ChunkObjectView objectView) =>
+                for(int row = 0; row < chunkView.chunkObjectViews.GetLength(0); row++)
                 {
-                    Destroy(objectView.chunkObjectReference);
-                });
+                    for(int col = 0; col < chunkView.chunkObjectViews.GetLength(1); col++)
+                    {
+                        if(chunkView.chunkObjectViews[row, col] != null)
+                        Destroy(chunkView.chunkObjectViews[row, col].chunkObjectReference);
+                    }
+                }
                 Destroy(chunkView.chunkReference);
             });
         });

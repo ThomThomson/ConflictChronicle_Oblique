@@ -33,23 +33,19 @@ public class Main : MonoBehaviour
     // Testing updates
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Return))
-        {
-            mapController.SaveToDisk();
-        }
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            mapController.SpawnWorldObject(focusPoint.transform.position, "TreeStump");
-        }
-        if (Input.GetKeyDown(KeyCode.Delete))
-        {
-            Debug.Log("Deleting");
-            mapController.RemoveWorldObject(focusPoint.transform.position);
-        }
         if(Input.GetMouseButtonDown(0))
         {
             Vector3? point = CC_CameraUtil.screenToWorldCoordinatesOnGround(Input.mousePosition);
             if(point.HasValue) { mapController.SpawnWorldObject((Vector3)point, "TreeStump"); }
+        }
+        if(Input.GetMouseButtonDown(1))
+        {
+            Vector3? point = CC_CameraUtil.screenToWorldCoordinatesOnGround(Input.mousePosition);
+            if(point.HasValue) { mapController.RemoveWorldObject((Vector3)point); }
+        }
+        if (Input.GetKeyDown(KeyCode.Return))
+        {
+            mapController.SaveToDisk();
         }
         if (Input.GetKeyDown(KeyCode.UpArrow))
         {

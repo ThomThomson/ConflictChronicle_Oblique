@@ -22,13 +22,14 @@ public class CC_CameraUtil
     public static Vector3? screenToWorldCoordinatesOnGround(Vector3 screencoordinates)
     {
         Ray ray = Camera.main.gameObject.GetComponent<CameraPerspectiveEditor>().ScreenPointToRay(screencoordinates);
+        Debug.DrawRay(ray.origin, ray.direction * Mathf.Infinity, Color.red, 1f);
         // Bit shift the index of the TERRAIN layer (9) to get a bit mask
         RaycastHit[] hits;
         int layerMask = 1 << CC_SettingsController.gameSettings.TERRAIN_LAYER_INDEX;
         hits = Physics.RaycastAll(ray.origin, ray.direction, layerMask);
         if (hits.Length > 0)
         {
-            return hits[hits.Length - 1].point;
+            return hits[0].point;
         }
         return null;
     }

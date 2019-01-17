@@ -33,19 +33,16 @@ public class CC_MapChunkModel
     {
         this.terrainKey = fromView.terrainKey;
         chunkObjects = new List<CC_MapObjectModel>();
-        fromView.chunkObjectViews.ForEach((ChunkObjectView view) =>
+        for(int row = 0; row < fromView.chunkObjectViews.GetLength(0); row++)
         {
-            int localx = CC_MapController.getPositionInChunkFromWorldPosition(
-                view.chunkObjectReference.transform.position.x,
-                fromView.colLocation
-            );
-            int localz = CC_MapController.getPositionInChunkFromWorldPosition(
-                view.chunkObjectReference.transform.position.z,
-                fromView.rowLocation
-            );
-            string location = localx + "," + localz;
-            this.chunkObjects.Add(new CC_MapObjectModel(location, view.chunkObjectID));
-        });
+            for(int col = 0; col < fromView.chunkObjectViews.GetLength(1); col++)
+            {
+                if(fromView.chunkObjectViews[row, col] != null)
+                {
+                    this.chunkObjects.Add(new CC_MapObjectModel(row + "," + col, fromView.chunkObjectViews[row, col].chunkObjectID));
+                }
+            }
+        }
     }
 
     public CC_MapChunkModel() { }

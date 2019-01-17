@@ -14,7 +14,6 @@ class CC_PlayerInterestHover : MonoBehaviour {
     void Update()
     {
         moveDirection = CC_InputController.input.getInputCameraNormalized();
-        //Vector3.ClampMagnitude(moveDirection, 1f);
         moveDirection *= speed;
         controller.Move(moveDirection * Time.deltaTime);
     }
