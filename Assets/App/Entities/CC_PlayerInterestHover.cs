@@ -1,4 +1,5 @@
 ﻿using System;
+using ConflictChronicle.Controllers;
 using UnityEngine;
 
 class CC_PlayerInterestHover : MonoBehaviour {

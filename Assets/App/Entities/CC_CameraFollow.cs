@@ -1,20 +1,25 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class CC_CameraFollow : MonoBehaviour {
-    public GameObject player;
+namespace ConflictChronicle.Entities
+{
 
-    [Range(0, 10)]
-    public float catchupSpeed;
-    private float yOffset;
-    private float zOffset;
-    private Vector3 targetingPosition;
-
-    private void LateUpdate()
+    public class CC_CameraFollow : MonoBehaviour
     {
-        if (!player) return;
-        Vector3 newPosition = player.transform.position;
-        transform.position = Vector3.Slerp(transform.position, newPosition, catchupSpeed * Time.deltaTime);
+        public GameObject player;
 
+        [Range(0, 10)]
+        public float catchupSpeed;
+        private float yOffset;
+        private float zOffset;
+        private Vector3 targetingPosition;
+
+        private void LateUpdate()
+        {
+            if (!player) return;
+            Vector3 newPosition = player.transform.position;
+            transform.position = Vector3.Slerp(transform.position, newPosition, catchupSpeed * Time.deltaTime);
+
+        }
     }
 }
