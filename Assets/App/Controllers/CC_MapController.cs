@@ -21,6 +21,7 @@ namespace ConflictChronicle.Controllers
         public string worldFolderLocation;
         public int mapRowLocation;
         public int mapColLocation;
+        public bool finishedLoad;
         private CC_MapModel mapModel;
         private List<List<MapChunkView>> chunkViews;
         private int mapLoadPercentage;
@@ -51,6 +52,7 @@ namespace ConflictChronicle.Controllers
 
         public void LoadMapIntoScene(CC_MapModel map, String worldFolderLocation, int mapRowLocation, int mapColLocation)
         {
+            this.finishedLoad = false;
             if (chunkViews != null)
             {
                 SaveToDisk(false);
@@ -86,6 +88,7 @@ namespace ConflictChronicle.Controllers
                 }
                 chunkViews.Add(chunkReferenceRow);
             }
+            this.finishedLoad = true;
             AstarPath.active.Scan();
         }
 

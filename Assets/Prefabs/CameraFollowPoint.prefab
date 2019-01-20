@@ -20,6 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4405844770287068}
   - component: {fileID: 212263769110325700}
+  - component: {fileID: 114474229810527576}
   m_Layer: 12
   m_Name: Rook
   m_TagString: Untagged
@@ -39,7 +40,7 @@ GameObject:
   - component: {fileID: 143776916903737286}
   m_Layer: 12
   m_Name: CameraFollowPoint
-  m_TagString: CC_PlayerInterestPoint
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -53,6 +54,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4623580853259428}
   - component: {fileID: 212981758850737568}
+  - component: {fileID: 114176655507736528}
+  - component: {fileID: 65684239038653210}
   m_Layer: 0
   m_Name: playerTarget
   m_TagString: Untagged
@@ -93,7 +96,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1550104812354440}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 33.88378, y: 7.384652, z: 25.256739}
+  m_LocalPosition: {x: 21.80275, y: -2.0863256, z: 19.401493}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4405844770287068}
@@ -101,6 +104,29 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &65684239038653210
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1663947054993930}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.7363281, y: 0.40625, z: 0.2}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &114176655507736528
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1663947054993930}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1574f6dae6ebd22489f368060e3e2bee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114176787637102872
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -113,6 +139,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 12
+  gravity: 1000
+--- !u!114 &114474229810527576
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1086136982588212}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1574f6dae6ebd22489f368060e3e2bee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!143 &143776916903737286
 CharacterController:
   m_ObjectHideFlags: 1
@@ -123,13 +161,13 @@ CharacterController:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Height: 0.3
+  m_Height: 4
   m_Radius: 0.3
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 2, z: 0}
 --- !u!212 &212263769110325700
 SpriteRenderer:
   m_ObjectHideFlags: 1
