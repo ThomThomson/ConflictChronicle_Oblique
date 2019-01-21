@@ -11,8 +11,8 @@ TagManager:
   - CC_Instantiate
   - CC_TestTarget
   - CC_AIEntityFolder
-  - CC_PlayerInterestPoint
   - CC_VisualOnly
+  - CC_SortedEntity
   layers:
   - Default
   - TransparentFX

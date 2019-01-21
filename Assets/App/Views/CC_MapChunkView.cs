@@ -13,6 +13,7 @@ namespace ConflictChronicle.Views
         public int colLocation { get; set; }
         public GameObject chunkReference { get; set; }
         public ChunkObjectView[,] chunkObjectViews { get; set; }
+        public CC_ChunkEdgeController edgeController { get; set; }
 
         public MapChunkView(CC_MapChunkModel model, GameObject chunkReference, int rowLocation, int colLocation)
         {
@@ -20,6 +21,7 @@ namespace ConflictChronicle.Views
             this.colLocation = colLocation;
             this.chunkReference = chunkReference;
             terrainKey = model.terrainKey;
+            edgeController = this.chunkReference.GetComponent<CC_ChunkEdgeController>();
             chunkObjectViews = new ChunkObjectView[CC_SettingsController.gameSettings.TILES_PER_CHUNK, CC_SettingsController.gameSettings.TILES_PER_CHUNK];
             for (int i = 0; i < model.chunkObjects.Count; i++)
             {
@@ -28,9 +30,17 @@ namespace ConflictChronicle.Views
                 string[] locationString = model.chunkObjects[i].location.Split(',');
                 float xLocation = CC_MapController.getWorldPositionFromPositionInChunk(Int32.Parse(locationString[1]), colLocation);
                 float zLocation = CC_MapController.getWorldPositionFromPositionInChunk(Int32.Parse(locationString[0]), rowLocation);
-                float yLocation = CC_MapController.getHeightFromRay(xLocation, zLocation);
+                float yLocation = CC_CameraController.worldTopToGround(new Vector3(xLocation, 0,  zLocation));
                 chunkObject.transform.position = new Vector3(xLocation, yLocation, zLocation);
                 chunkObjectViews[Int32.Parse(locationString[0]), Int32.Parse(locationString[1])] = new ChunkObjectView(chunkObject, model.chunkObjects[i].objectKey);
+            }
+        }
+
+        public void refreshEdges(bool propigate = false)
+        {
+            if(edgeController != null)
+            {
+                edgeController.recalculateEdges(propigate);
             }
         }
     }

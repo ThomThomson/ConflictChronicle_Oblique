@@ -31,7 +31,6 @@ namespace ConflictChronicle.Controllers
 
         public void Start()
         {
-            instance = this;
             graph = (GridGraph)AstarPath.active.data.graphs[0];
         }
 
@@ -52,6 +51,10 @@ namespace ConflictChronicle.Controllers
 
         public void LoadMapIntoScene(CC_MapModel map, String worldFolderLocation, int mapRowLocation, int mapColLocation)
         {
+            if(instance == null)
+            {
+                instance = this;
+            }
             this.finishedLoad = false;
             if (chunkViews != null)
             {
@@ -90,6 +93,31 @@ namespace ConflictChronicle.Controllers
             }
             this.finishedLoad = true;
             AstarPath.active.Scan();
+            StartCoroutine("EdgeDetectAllChunks");
+        }
+
+        public IEnumerator EdgeDetectAllChunks()
+        {
+            int edgeCalcSinceLastFrame = 0;
+            for (int row = 0; row < mapModel.mapTerrain.Count; row++)
+            {
+                for (int col = 0; col < mapModel.mapTerrain[row].Count; col++)
+                {
+                    if (!(edgeCalcSinceLastFrame < CC_SettingsController.gameSettings.LOADING_CHUNKS_PER_FRAME))
+                    {
+                        edgeCalcSinceLastFrame = 0;
+                        yield return 0;
+                    }
+                    chunkViews[row][col].refreshEdges();
+                    edgeCalcSinceLastFrame++;
+                }
+            }
+        }
+
+        public void EdgeDetectChunkFromLocation(Vector3 location)
+        {
+            MapChunkView chunk = getChunkFromPosition(location);
+            chunk.refreshEdges(true);
         }
 
         public MapChunkView setUpChunkView(CC_MapChunkModel model, int row, int col)
@@ -129,21 +157,6 @@ namespace ConflictChronicle.Controllers
             return chunkViews[row][col];
         }
 
-        public static float getHeightFromRay(float x, float z)
-        {
-            Ray ray = new Ray(new Vector3(x, CC_SettingsController.gameSettings.TERRAIN_TOP_HEIGHT, z), Vector3.down);
-            int layerMask = 1 << CC_SettingsController.gameSettings.TERRAIN_LAYER_INDEX;
-            RaycastHit hit;
-            if (Physics.Raycast(ray, out hit, layerMask))
-            {
-                return hit.point.y;
-            }
-            else
-            {
-                return 0;
-            }
-        }
-
         public static int getPositionInChunkFromWorldPosition(float worldPosition, int chunkIndex)
         {
             return (int)(worldPosition - (chunkIndex * CC_SettingsController.gameSettings.TILES_PER_CHUNK));
@@ -169,7 +182,7 @@ namespace ConflictChronicle.Controllers
                     if (overWrite) { RemoveWorldObject(position); }
                     GameObject spawnedObject = GameObject.Instantiate(CC_AssetMap.assetMap.objectTypes[objectId]);
                     spawnedObject.transform.parent = chunk.chunkReference.transform;
-                    spawnedObject.transform.position = new Vector3((float)spawnx, getHeightFromRay((float)spawnx, (float)spawnz), (float)spawnz);
+                    spawnedObject.transform.position = new Vector3((float)spawnx, CC_CameraController.worldTopToGround(position), (float)spawnz);
                     chunk.chunkObjectViews[localz, localx] = new ChunkObjectView(spawnedObject, objectId);
                     MapChunkChange change = new MapChunkChange(chunk, chunk.rowLocation, chunk.colLocation);
                     pendingChanges.Enqueue(change);
@@ -178,7 +191,6 @@ namespace ConflictChronicle.Controllers
                     {
                         graph.active.UpdateGraphs(graphUpdateBox.bounds);
                     }
-                    Debug.Log("ADDITION: Got chunk: " + chunk.rowLocation + " " + chunk.colLocation + " And location: " + localz + " " + localx + " from: " + position);
                 }
             }
             else
@@ -194,7 +206,6 @@ namespace ConflictChronicle.Controllers
             int localx = getPositionInChunkFromWorldPosition(position.x, chunk.colLocation);
             if (chunk.chunkObjectViews[localz, localx] != null)
             {
-                Debug.Log("DELETION: Got chunk: " + chunk.rowLocation + " " + chunk.colLocation + " And location: " + localz + " " + localx + " from " + position);
                 BoxCollider graphUpdateBox = chunk.chunkObjectViews[localz, localx].chunkObjectReference.GetComponent<BoxCollider>();
                 Bounds updateBounds = new Bounds(Vector3.zero, Vector3.zero);
                 if (graphUpdateBox) { updateBounds = new Bounds(graphUpdateBox.bounds.center, graphUpdateBox.bounds.size); }
@@ -252,6 +263,18 @@ namespace ConflictChronicle.Controllers
                     Destroy(chunkView.chunkReference);
                 });
             });
+        }
+
+        public MapChunkView GetChunkFromIndices(int row, int col)
+        {
+            if(row >= chunkViews.Count || row < 0 || col >= chunkViews[0].Count || col < 0)
+            {
+                return null;
+            }
+            else
+            {
+                return chunkViews[row][col];
+            }
         }
     }
 }

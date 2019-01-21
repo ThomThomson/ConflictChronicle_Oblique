@@ -50,6 +50,11 @@ namespace ConflictChronicle
                 Vector3? point = CC_CameraController.screenToWorldCoordinatesOnGround(Input.mousePosition);
                 if (point.HasValue) { mapController.RemoveWorldObject((Vector3)point); }
             }
+            if(Input.GetKeyDown(KeyCode.Alpha1))
+            {
+                Vector3? point = CC_CameraController.screenToWorldCoordinatesOnGround(Input.mousePosition);
+                if (point.HasValue) { mapController.EdgeDetectChunkFromLocation((Vector3)point); }
+            }
             if (Input.GetKeyDown(KeyCode.Return))
             {
                 mapController.SaveToDisk();

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using ConflictChronicle.Views;
 using UnityEngine;
 
 
@@ -19,27 +20,15 @@ namespace ConflictChronicle.Controllers
         {
             Vector3 screenPoint = Camera.main.gameObject.GetComponent<CameraPerspectiveEditor>().WorldToScreenPoint(spriteLocation);
             Ray screenRay = Camera.main.gameObject.GetComponent<CameraPerspectiveEditor>().ScreenPointToRay(screenPoint);
-            Debug.DrawRay(screenRay.origin, screenRay.direction * Vector3.Distance(screenRay.origin, spriteLocation), Color.red, 0.1f);
-            RaycastHit[] hits;
-            hits = Physics.RaycastAll(screenRay.origin, screenRay.direction, Vector3.Distance(screenRay.origin, spriteLocation));
-            Nullable<int> nearestSortOrder = null;
-            float nearestDistance = Mathf.Infinity;
-            for (int i = 0; i < hits.Length; i++)
+            Debug.DrawLine(screenRay.origin, spriteLocation, Color.red, 0.1f);
+            RaycastHit hit;
+            if (Physics.Linecast(spriteLocation, screenRay.origin, out hit))
             {
-                CC_IsoCollider isoCollider = hits[i].transform.gameObject.GetComponent<CC_IsoCollider>();
+                CC_IsoCollider isoCollider = hit.transform.gameObject.GetComponent<CC_IsoCollider>();
                 if (isoCollider != null)
                 {
-                    float hitDistance = Vector3.Distance(spriteLocation, hits[i].transform.position);
-                    if (hitDistance < nearestDistance)
-                    {
-                        nearestSortOrder = isoCollider.GovernedSprite.sortingOrder - 1;
-                        nearestDistance = hitDistance;
-                    }
+                    return isoCollider.GovernedSprite.sortingOrder - 1;
                 }
-            }
-            if (nearestSortOrder.HasValue)
-            {
-                return (int)nearestSortOrder;
             }
             return spriteSort(spriteLocation);
         }
@@ -72,17 +61,16 @@ namespace ConflictChronicle.Controllers
             return null;
         }
 
-        public static Vector3? worldTopToGround(Vector3 screencoordinates)
+        public static float worldTopToGround(Vector3 worldCoordinates)
         {
-            Ray ray = Camera.main.gameObject.GetComponent<CameraPerspectiveEditor>().ScreenPointToRay(screencoordinates);
-            // Bit shift the index of the TERRAIN layer (9) to get a bit mask
             RaycastHit hit;
+            Ray ray = new Ray(new Vector3(worldCoordinates.x, CC_SettingsController.gameSettings.TERRAIN_TOP_HEIGHT, worldCoordinates.z), Vector3.down);
             int layerMask = 1 << CC_SettingsController.gameSettings.TERRAIN_LAYER_INDEX;
-            if (Physics.Raycast(ray.origin, ray.direction, out hit, layerMask))
+            if (Physics.Linecast(ray.origin, new Vector3(worldCoordinates.x, 0, worldCoordinates.z), out hit, layerMask))
             {
-                return hit.point;
+                return hit.point.y;
             }
-            return null;
+            return 0f;
         }
     }
 }
