@@ -1,0 +1,115 @@
+CC_TerrainChunk playerLocationChunk = getTerrainChunkFromLocation (this.playerFocusPoint.transform.position);
+if (playerLocationChunk == null) { return; }
+
+zIntVector2 currentViewNorthWest = new zIntVector2 (
+    visibleWorld.rows[0].columns[0].xGridPosition,
+    visibleWorld.rows[0].columns[0].zGridPosition
+);
+zIntVector2 maxViewNorthWest = new zIntVector2 (
+    Mathf.Clamp (playerLocationChunk.xGridPosition - viewDistance, 0, worldModel.worldSizeChunksX - 1),
+    Mathf.Clamp (playerLocationChunk.zGridPosition - viewDistance, 0, worldModel.worldSizeChunksZ - 1)
+);
+
+zIntVector2 currentViewSouthEast = new zIntVector2 (
+    visibleWorld.rows[visibleWorld.rows.Count - 1].columns[visibleWorld.rows[visibleWorld.rows.Count - 1].columns.Count - 1].xGridPosition,
+    visibleWorld.rows[visibleWorld.rows.Count - 1].columns[visibleWorld.rows[visibleWorld.rows.Count - 1].columns.Count - 1].zGridPosition
+);
+
+zIntVector2 maxViewSouthEast = new zIntVector2 (
+    Mathf.Clamp (playerLocationChunk.xGridPosition + viewDistance, 0, worldModel.worldSizeChunksX - 1),
+    Mathf.Clamp (playerLocationChunk.zGridPosition + viewDistance, 0, worldModel.worldSizeChunksZ - 1)
+);
+
+if (playerLocationChunk.xGridPosition < currentViewNorthWest.x ||
+    playerLocationChunk.xGridPosition > currentViewSouthEast.x ||
+    playerLocationChunk.zGridPosition < currentViewNorthWest.z ||
+    playerLocationChunk.zGridPosition > currentViewSouthEast.z
+) {
+    visibleWorld.allChunksLeaveView ();
+    visibleWorld = new VisibleWorld (this, this.playerFocusPoint.transform);
+    manageVisibility ();
+}
+
+// west side
+while (currentViewNorthWest.x < maxViewNorthWest.x) {
+    foreach (TerrainChunkViewRow rowInView in visibleWorld.rows) {
+        this.chunkLeaveQueue.Enqueue (rowInView.columns[0]);
+        rowInView.columns.RemoveAt (0);
+    }
+    currentViewNorthWest.x = currentViewNorthWest.x + 1;
+}
+
+while (currentViewNorthWest.x > maxViewNorthWest.x) {
+    foreach (TerrainChunkViewRow rowInView in visibleWorld.rows) {
+        CC_TerrainChunk chunkToAddToRow = GetTerrainChunk (currentViewNorthWest.x - 1, rowInView.zLocation);
+        this.chunkEnterQueue.Enqueue (chunkToAddToRow);
+        rowInView.columns.Insert (0, chunkToAddToRow);
+    }
+    currentViewNorthWest.x = currentViewNorthWest.x - 1;
+}
+
+// east side
+
+while (currentViewSouthEast.x > maxViewSouthEast.x) {
+    foreach (TerrainChunkViewRow rowInView in visibleWorld.rows) {
+        this.chunkLeaveQueue.Enqueue (rowInView.columns[rowInView.columns.Count - 1]);
+        rowInView.columns.RemoveAt (rowInView.columns.Count - 1);
+    }
+    currentViewSouthEast.x = currentViewSouthEast.x - 1;
+}
+
+while (currentViewSouthEast.x < maxViewSouthEast.x) {
+    foreach (TerrainChunkViewRow rowInView in visibleWorld.rows) {
+        CC_TerrainChunk chunkToAddToRow = GetTerrainChunk (currentViewSouthEast.x + 1, rowInView.zLocation);
+        this.chunkEnterQueue.Enqueue (chunkToAddToRow);
+        rowInView.columns.Add (chunkToAddToRow);
+    }
+    currentViewSouthEast.x = currentViewSouthEast.x + 1;
+}
+
+// north side
+
+while (currentViewNorthWest.z < maxViewNorthWest.z) {
+    foreach (CC_TerrainChunk column in visibleWorld.rows[0].columns) {
+        this.chunkLeaveQueue.Enqueue (column);
+    }
+    visibleWorld.rows.RemoveAt (0);
+    currentViewNorthWest.z = currentViewNorthWest.z + 1;
+}
+
+while (currentViewNorthWest.z > maxViewNorthWest.z) {
+    List<CC_TerrainChunk> newRow = new List<CC_TerrainChunk> ();
+    int zPosition = currentViewNorthWest.z - 1;
+    int xStart = currentViewNorthWest.x;
+    int xEnd = currentViewSouthEast.x;
+    for (int x = xStart; x <= xEnd; x++) {
+        CC_TerrainChunk chunkEnteringView = GetTerrainChunk (x, zPosition);
+        chunkEnterQueue.Enqueue (chunkEnteringView);
+        newRow.Add (chunkEnteringView);
+    }
+    visibleWorld.rows.Insert (0, new TerrainChunkViewRow (zPosition, newRow));
+    currentViewNorthWest.z = currentViewNorthWest.z - 1;
+}
+
+// south side
+while (currentViewSouthEast.z > maxViewSouthEast.z) {
+    foreach (CC_TerrainChunk column in visibleWorld.rows[visibleWorld.rows.Count - 1].columns) {
+        this.chunkLeaveQueue.Enqueue (column);
+    }
+    visibleWorld.rows.RemoveAt (visibleWorld.rows.Count - 1);
+    currentViewSouthEast.z = currentViewSouthEast.z - 1;
+}
+
+while (currentViewSouthEast.z < maxViewSouthEast.z) {
+    List<CC_TerrainChunk> newRow = new List<CC_TerrainChunk> ();
+    int zPosition = currentViewSouthEast.z + 1;
+    int xStart = currentViewNorthWest.x;
+    int xEnd = currentViewSouthEast.x;
+    for (int x = xStart; x <= xEnd; x++) {
+        CC_TerrainChunk chunkEnteringView = GetTerrainChunk (x, zPosition);
+        chunkEnterQueue.Enqueue (chunkEnteringView);
+        newRow.Add (chunkEnteringView);
+    }
+    visibleWorld.rows.Add (new TerrainChunkViewRow (zPosition, newRow));
+    currentViewSouthEast.z = currentViewSouthEast.z + 1;
+}

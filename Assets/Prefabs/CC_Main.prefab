@@ -1,0 +1,129 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &9173801362128537633
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9173801362128537647}
+  - component: {fileID: 9173801362128537645}
+  - component: {fileID: 9173801362128537646}
+  - component: {fileID: 5971865577204611191}
+  m_Layer: 0
+  m_Name: CC_Main
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9173801362128537647
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9173801362128537633}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 44.23184, y: 5.0082216, z: 7.887502}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &9173801362128537645
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9173801362128537633}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a1987cc5efd71c4aa567540d7f9f431, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerFocusPoint: {fileID: 1584693725068683969, guid: 7855f10bfb9412548961fdec334ec648,
+    type: 3}
+  Camera: {fileID: 9068680054385087232, guid: 658dc29e494014b4cb8809bbb3665b62, type: 3}
+  worldFloor: {fileID: 5978294918414078937, guid: 2c8e15616d0b9654186a9b9f511a92ff,
+    type: 3}
+  blackScreenOverlay: {fileID: 0}
+  editorChunkTypes:
+  - id: FlatGrass
+    gameObject: {fileID: 2521285404074510978, guid: e3b10c63cffca184eb5278c79339232e,
+      type: 3}
+  - id: HalfGrass
+    gameObject: {fileID: 6788553098522230354, guid: b682dd387aa005543bdf68a38df75830,
+      type: 3}
+  editorEntityTypes: []
+  editorObjectTypes:
+  - id: TreeStump
+    gameObject: {fileID: 1288828944238372, guid: bb51f0b83d563d74e91d5e1c3c690667,
+      type: 3}
+  editorCharacterTypes:
+  - id: MALE_AVERAGE
+    nearHipLocation: {x: -0.0892, y: -0.1876, z: 0}
+    farHipLocation: {x: 0.0337, y: -0.1881, z: 0}
+    nearShoulderLocation: {x: -0.2084, y: 0.2069, z: 0}
+    farShoulderLocation: {x: 0.166, y: 0.2053, z: 0}
+    headFrontSprite: {fileID: 21300000, guid: 4e358e5ca9cd0b042a1c6b683d958542, type: 3}
+    headBackSprite: {fileID: 21300002, guid: 4e358e5ca9cd0b042a1c6b683d958542, type: 3}
+    stomachFrontSprite: {fileID: 21300026, guid: 4e358e5ca9cd0b042a1c6b683d958542,
+      type: 3}
+    stomachBackSprite: {fileID: 21300034, guid: 4e358e5ca9cd0b042a1c6b683d958542,
+      type: 3}
+    chestFrontSprite: {fileID: 21300036, guid: 4e358e5ca9cd0b042a1c6b683d958542, type: 3}
+    chestBackSprite: {fileID: 21300038, guid: 4e358e5ca9cd0b042a1c6b683d958542, type: 3}
+  - id: FEMALE_AVERAGE
+    nearHipLocation: {x: -0.0724, y: -0.1748, z: 0}
+    farHipLocation: {x: 0.0513, y: -0.1745, z: 0}
+    nearShoulderLocation: {x: -0.1633, y: 0.2162, z: 0}
+    farShoulderLocation: {x: 0.1246, y: 0.2189, z: 0}
+    headFrontSprite: {fileID: 21300000, guid: 4e358e5ca9cd0b042a1c6b683d958542, type: 3}
+    headBackSprite: {fileID: 21300002, guid: 4e358e5ca9cd0b042a1c6b683d958542, type: 3}
+    stomachFrontSprite: {fileID: 21300012, guid: 4e358e5ca9cd0b042a1c6b683d958542,
+      type: 3}
+    stomachBackSprite: {fileID: 21300028, guid: 4e358e5ca9cd0b042a1c6b683d958542,
+      type: 3}
+    chestFrontSprite: {fileID: 21300010, guid: 4e358e5ca9cd0b042a1c6b683d958542, type: 3}
+    chestBackSprite: {fileID: 21300020, guid: 4e358e5ca9cd0b042a1c6b683d958542, type: 3}
+--- !u!114 &9173801362128537646
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9173801362128537633}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16f702bdeeb945c4896744e7e380e093, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TerrainDefaultId: FlatGrass
+  TerrainTopHeight: 128
+  TerrainLayerIndex: 9
+  TerrainTilesPerChunk: 3
+  MapDefaultSizeChunks: 100
+  MapChunkChangesPerFrame: 10
+  MapManageVisibilityDelay: 0
+  MapViewDistance: 3
+  CameraRotationDuration: 0.5
+  CameraCatchupSpeed: 5
+  CharacterDefaultType: 0
+--- !u!114 &5971865577204611191
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9173801362128537633}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a54df96781627244bfa4c974266cfa3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  assetController: {fileID: 0}
+  settingsController: {fileID: 0}

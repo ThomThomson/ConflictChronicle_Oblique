@@ -4,7 +4,7 @@
 
 # Conclict Chronicle Specific
 # ============
-Assets/AssetStore*
+Assets/plugins*
 Assets/Art
 
 
