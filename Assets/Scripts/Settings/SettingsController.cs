@@ -5,16 +5,16 @@ using UnityEngine;
 namespace ConflictChronicle {
 
     public class SettingsController : MonoBehaviour {
-        public string TerrainDefaultId = "FlatGrass";
-        public int TerrainTopHeight = 128;
-        public int TerrainLayerIndex = 9;
-        public int TerrainTilesPerChunk = 3;
+        public int TerrainTopHeight = 32;
+        public int TerrainTilesPerChunk = 8;
+        public int TerrainMetersPerTile = 2;
+        public string TerrainHeightmapFileName = "terrain_height.png";
 
-        public int MapDefaultSizeChunks = 600;
-        public int MapChunkChangesPerFrame = 10;
-        public float MapManageVisibilityDelay = 0f;
+        public string TerrainDefaultId;
+        public int MapDefaultSizeChunks;
 
-        public float sortMultiplierHeight = 1f;
+        public bool loadMap;
+        public Vector3 noMapPlayerStart;
 
         [Range (1, 30)]
         public int MapViewDistance = 3;

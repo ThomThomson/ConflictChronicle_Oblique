@@ -100,13 +100,13 @@ namespace ConflictChronicle {
         }
 
         public Vector3? screenToWorldCoordinatesOnGround (Vector3 screencoordinates) {
-            Ray ray = Camera.main.gameObject.GetComponent<CameraPerspectiveEditor> ().ScreenPointToRay (screencoordinates);
-            RaycastHit[] hits;
-            int layerMask = 1 << settingsController.TerrainLayerIndex;
-            hits = Physics.RaycastAll (ray.origin, ray.direction, layerMask);
-            if (hits.Length > 0) {
-                return hits[0].point;
-            }
+            // Ray ray = Camera.main.gameObject.GetComponent<CameraPerspectiveEditor> ().ScreenPointToRay (screencoordinates);
+            // RaycastHit[] hits;
+            // int layerMask = 1 << settingsController.TerrainLayerIndex;
+            // hits = Physics.RaycastAll (ray.origin, ray.direction, layerMask);
+            // if (hits.Length > 0) {
+            //     return hits[0].point;
+            // }
             return null;
         }
 

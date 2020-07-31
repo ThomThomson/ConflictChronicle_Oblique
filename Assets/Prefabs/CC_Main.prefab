@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &9173801362128537633
+--- !u!1 &3879598895286261607
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,10 +8,10 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 9173801362128537647}
-  - component: {fileID: 9173801362128537645}
-  - component: {fileID: 9173801362128537646}
-  - component: {fileID: 5971865577204611191}
+  - component: {fileID: 590452168231880915}
+  - component: {fileID: 7916488634726810763}
+  - component: {fileID: 5247768311528643616}
+  - component: {fileID: 4453059040092770804}
   m_Layer: 0
   m_Name: CC_Main
   m_TagString: Untagged
@@ -19,27 +19,27 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &9173801362128537647
+--- !u!4 &590452168231880915
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9173801362128537633}
+  m_GameObject: {fileID: 3879598895286261607}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 44.23184, y: 5.0082216, z: 7.887502}
+  m_LocalPosition: {x: 88.46368, y: 10.016443, z: 15.775004}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &9173801362128537645
+--- !u!114 &7916488634726810763
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9173801362128537633}
+  m_GameObject: {fileID: 3879598895286261607}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0a1987cc5efd71c4aa567540d7f9f431, type: 3}
@@ -50,13 +50,12 @@ MonoBehaviour:
   Camera: {fileID: 9068680054385087232, guid: 658dc29e494014b4cb8809bbb3665b62, type: 3}
   worldFloor: {fileID: 5978294918414078937, guid: 2c8e15616d0b9654186a9b9f511a92ff,
     type: 3}
+  temp_cliff: {fileID: 6421650700999262119, guid: ce745a25f72ecf74e8671908b1377768,
+    type: 3}
   blackScreenOverlay: {fileID: 0}
   editorChunkTypes:
   - id: FlatGrass
-    gameObject: {fileID: 2521285404074510978, guid: e3b10c63cffca184eb5278c79339232e,
-      type: 3}
-  - id: HalfGrass
-    gameObject: {fileID: 6788553098522230354, guid: b682dd387aa005543bdf68a38df75830,
+    gameObject: {fileID: 4355557092701209121, guid: b5ca07361a00b3b41887eb2c453e3873,
       type: 3}
   editorEntityTypes: []
   editorObjectTypes:
@@ -90,40 +89,81 @@ MonoBehaviour:
       type: 3}
     chestFrontSprite: {fileID: 21300010, guid: 4e358e5ca9cd0b042a1c6b683d958542, type: 3}
     chestBackSprite: {fileID: 21300020, guid: 4e358e5ca9cd0b042a1c6b683d958542, type: 3}
---- !u!114 &9173801362128537646
+  editor_TEMP_TileTypes:
+  - id: 0-0-0-0
+    gameObject: {fileID: 1225431159834380300, guid: 44d42a21f456c9949a68191cc93e0a98,
+      type: 3}
+  - id: 0-0-1-1
+    gameObject: {fileID: 6574163415779075975, guid: 9864b13d85a38c64ca628ff53baae4f3,
+      type: 3}
+  - id: 0-1-1-0
+    gameObject: {fileID: 2948205666961893348, guid: d1d2327e732d10d4bb8791b7eaf59c70,
+      type: 3}
+  - id: 1-0-0-1
+    gameObject: {fileID: 6871093518887806048, guid: abd2bbea4101bfb46a640a69bc567c81,
+      type: 3}
+  - id: 1-1-0-0
+    gameObject: {fileID: 2019478822137592299, guid: 484da66321e6036438ce71f82b782116,
+      type: 3}
+  - id: 0-1-1-1
+    gameObject: {fileID: 2124893647520445614, guid: 8e2cfc11ecdd301439a54f2eb20df88b,
+      type: 3}
+  - id: 1-1-1-0
+    gameObject: {fileID: 3665931344838478080, guid: 0b1cb8298ced43f4fa303014dd12c20a,
+      type: 3}
+  - id: 1-0-1-1
+    gameObject: {fileID: 6634134031141869796, guid: 9924b2de23806a144acc3fe29827d1f0,
+      type: 3}
+  - id: 1-1-0-1
+    gameObject: {fileID: 2578053358005961310, guid: b87b1ecd589f0f8428619547f9414789,
+      type: 3}
+  - id: 1-0-0-0
+    gameObject: {fileID: 7643393938853753001, guid: e6ad6be83e85ee84985ddb5158ea1b0a,
+      type: 3}
+  - id: 0-1-0-0
+    gameObject: {fileID: 8016742990190103747, guid: 2a5d8032cf9cb6e49ad2938d37b970f3,
+      type: 3}
+  - id: 0-0-1-0
+    gameObject: {fileID: 1336596645794741719, guid: e6d2475380b2ee34990a1419ebadb0ee,
+      type: 3}
+  - id: 0-0-0-1
+    gameObject: {fileID: 1376073051799828378, guid: fab7c8ed1e6dc02448828590d721cda0,
+      type: 3}
+--- !u!114 &5247768311528643616
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9173801362128537633}
+  m_GameObject: {fileID: 3879598895286261607}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 16f702bdeeb945c4896744e7e380e093, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  TerrainTopHeight: 32
+  TerrainTilesPerChunk: 8
+  TerrainMetersPerTile: 2
+  TerrainHeightmapFileName: terrain_height.png
   TerrainDefaultId: FlatGrass
-  TerrainTopHeight: 128
-  TerrainLayerIndex: 9
-  TerrainTilesPerChunk: 3
   MapDefaultSizeChunks: 100
-  MapChunkChangesPerFrame: 10
-  MapManageVisibilityDelay: 0
-  MapViewDistance: 3
+  loadMap: 1
+  noMapPlayerStart: {x: 2, y: 110, z: 2}
+  MapViewDistance: 10
   CameraRotationDuration: 0.5
   CameraCatchupSpeed: 5
   CharacterDefaultType: 0
---- !u!114 &5971865577204611191
+--- !u!114 &4453059040092770804
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9173801362128537633}
+  m_GameObject: {fileID: 3879598895286261607}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7a54df96781627244bfa4c974266cfa3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  assetController: {fileID: 0}
-  settingsController: {fileID: 0}
+  assetController: {fileID: 7916488634726810763}
+  settingsController: {fileID: 5247768311528643616}

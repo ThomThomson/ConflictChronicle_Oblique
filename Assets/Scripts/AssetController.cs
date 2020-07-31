@@ -35,12 +35,17 @@ namespace ConflictChronicle {
         public GameObject Camera;
 
         public GameObject worldFloor;
+
+        public GameObject temp_cliff;
         public Image blackScreenOverlay;
 
         public CC_InspectorAsset[] editorChunkTypes;
         public CC_InspectorAsset[] editorEntityTypes;
         public CC_InspectorAsset[] editorObjectTypes;
         public CC_Character_Type[] editorCharacterTypes;
+
+        public CC_InspectorAsset[] editor_TEMP_TileTypes;
+        public Dictionary<string, GameObject> TEMP_TileTypes { get; private set; }
 
         public Dictionary<string, GameObject> chunkTypes { get; private set; }
         public Dictionary<string, GameObject> entityTypes { get; private set; }
@@ -52,6 +57,8 @@ namespace ConflictChronicle {
             chunkTypes = fillDictionaryFromArray (editorChunkTypes, chunkTypes);
             entityTypes = fillDictionaryFromArray (editorEntityTypes, entityTypes);
             objectTypes = fillDictionaryFromArray (editorObjectTypes, objectTypes);
+
+            TEMP_TileTypes = fillDictionaryFromArray (editor_TEMP_TileTypes, TEMP_TileTypes);
             fillCharacterTypesDictionary ();
         }
 

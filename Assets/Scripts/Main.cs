@@ -29,11 +29,11 @@ namespace ConflictChronicle {
             tempPlayerCharacter.InjectDependencies (settingsController, cameraController, assetController);
             cameraController.PlayerFocusPoint = playerFocusPoint;
 
-            WorldController worldController = this.gameObject.AddComponent<WorldController> ();
-            worldController.injectDependencies (settingsController, assetController, cameraController);
-            worldController.loadWorld (settingsController.environment.SAVE_FILE_LOCATION, playerFocusPoint.transform);
-
-            // worldController.startPlayer (playerFocusPoint.transform);
+            if (settingsController.loadMap) {
+                WorldController worldController = this.gameObject.AddComponent<WorldController> ();
+                worldController.injectDependencies (settingsController, assetController, cameraController);
+                worldController.loadWorld (settingsController.environment.SAVE_FILE_LOCATION, playerFocusPoint.transform);
+            }
             Time.timeScale = 1;
         }
     }
